@@ -128,6 +128,7 @@ Automotive repair shops often rely on fragmented tools — paper work orders, sp
 </table>
 
 > [!NOTE]
+>
 > - Python 3.9+ required
 > - Neon PostgreSQL account required for cloud database (SQLite used for local testing)
 > - Google Cloud Console account optional (for OAuth sign-in)
@@ -153,6 +154,7 @@ Automotive repair shops often rely on fragmented tools — paper work orders, sp
 Complete shared-schema multi-tenancy with automatic data isolation. Each organization operates in its own workspace with independent service catalogs, customer records, and team management — all on a single database deployment.
 
 Key capabilities include:
+
 - 🏢 **Organization Management**: Create and configure multiple repair shops with custom settings
 - 🔒 **Data Isolation**: `TenantScopedMixin` automatically filters all queries by `tenant_id`
 - 👥 **Team Invitations**: Invite team members with role-based permissions
@@ -166,12 +168,14 @@ Key capabilities include:
 Two distinct portal experiences for Technicians and Administrators, controlled by a 6-role RBAC system defined on `TenantMembership`:
 
 **Technician Portal:**
+
 - 📋 Work order management with pagination
 - 🔧 Add services and parts to jobs with quantity tracking
 - 💰 Real-time total cost calculation
 - ✅ Job completion workflow
 
 **Administrator Portal:**
+
 - 👤 Customer management with search (first name, family name, or both)
 - 💳 Billing management with overdue tracking (14-day threshold)
 - 📦 Service & parts catalog management with categories and descriptions
@@ -182,14 +186,14 @@ Two distinct portal experiences for Technicians and Administrators, controlled b
 
 **RBAC Roles:**
 
-| Role | Key Permissions |
-|------|----------------|
-| `owner` | Full access including organization management |
-| `admin` | User management, catalog, inventory, jobs, billing, reports |
-| `manager` | Jobs, customers, billing, reports |
-| `technician` | Jobs, reports |
-| `parts_clerk` | Catalog, inventory, reports |
-| `viewer` | Reports only |
+| Role          | Key Permissions                                             |
+| ------------- | ----------------------------------------------------------- |
+| `owner`       | Full access including organization management               |
+| `admin`       | User management, catalog, inventory, jobs, billing, reports |
+| `manager`     | Jobs, customers, billing, reports                           |
+| `technician`  | Jobs, reports                                               |
+| `parts_clerk` | Catalog, inventory, reports                                 |
+| `viewer`      | Reports only                                                |
 
 [![][back-to-top]](#readme-top)
 
@@ -271,6 +275,7 @@ Integrated SaaS billing with Stripe for subscription management:
 </div>
 
 **Backend:**
+
 - **Framework**: Flask 3.1.3 with application factory pattern
 - **ORM**: SQLAlchemy 2.0.36 with custom model mixins
 - **Database**: Neon PostgreSQL (cloud) / SQLite (testing)
@@ -280,6 +285,7 @@ Integrated SaaS billing with Stripe for subscription management:
 - **WSGI Server**: Gunicorn 23.0.0
 
 **Frontend:**
+
 - **Framework**: Bootstrap 5.3 with custom CSS design system
 - **Charts**: Chart.js 4.4.0 for data visualization
 - **Icons**: Lucide Icons (CDN, client-side rendering)
@@ -287,6 +293,7 @@ Integrated SaaS billing with Stripe for subscription management:
 - **JavaScript**: Vanilla ES6+ (no build tools required)
 
 **DevOps:**
+
 - **Deployment**: Heroku with Procfile (Gunicorn)
 - **Database**: Neon PostgreSQL (serverless, auto-scaling)
 - **Code Quality**: Black (formatting), isort (imports), flake8 (linting), mypy (types)
@@ -629,48 +636,51 @@ app/templates/
 <summary>&nbsp;&nbsp;<strong>Table Details — Core Tables</strong></summary><br>
 
 #### `user`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `user_id` | Integer | PK |
-| `username` | String(50) | UNIQUE, NOT NULL, indexed |
-| `email` | String(320) | UNIQUE, indexed |
-| `password_hash` | String(255) | NOT NULL |
-| `is_superadmin` | Boolean | default: false |
-| `is_active` | Boolean | default: true |
-| `last_login` | DateTime | nullable |
-| `role` | String(20) | indexed (legacy field) |
-| `neon_auth_user_id` | String(255) | UNIQUE, indexed |
-| `created_at` / `updated_at` | DateTime | auto-managed |
+
+| Column                      | Type        | Constraints               |
+| --------------------------- | ----------- | ------------------------- |
+| `user_id`                   | Integer     | PK                        |
+| `username`                  | String(50)  | UNIQUE, NOT NULL, indexed |
+| `email`                     | String(320) | UNIQUE, indexed           |
+| `password_hash`             | String(255) | NOT NULL                  |
+| `is_superadmin`             | Boolean     | default: false            |
+| `is_active`                 | Boolean     | default: true             |
+| `last_login`                | DateTime    | nullable                  |
+| `role`                      | String(20)  | indexed (legacy field)    |
+| `neon_auth_user_id`         | String(255) | UNIQUE, indexed           |
+| `created_at` / `updated_at` | DateTime    | auto-managed              |
 
 #### `tenant`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `tenant_id` | Integer | PK |
-| `name` | String(100) | NOT NULL |
-| `slug` | String(100) | UNIQUE, NOT NULL, indexed |
-| `business_type` | String(20) | NOT NULL, default: `auto_repair` |
-| `email` | String(320) | nullable |
-| `phone` | String(20) | nullable |
-| `address` | Text | nullable |
-| `logo_url` | String(500) | nullable |
-| `status` | String(20) | NOT NULL, default: `trial` |
-| `settings` | JSON | nullable |
-| `trial_ends_at` | DateTime | nullable |
-| `created_at` / `updated_at` | DateTime | auto-managed |
+
+| Column                      | Type        | Constraints                      |
+| --------------------------- | ----------- | -------------------------------- |
+| `tenant_id`                 | Integer     | PK                               |
+| `name`                      | String(100) | NOT NULL                         |
+| `slug`                      | String(100) | UNIQUE, NOT NULL, indexed        |
+| `business_type`             | String(20)  | NOT NULL, default: `auto_repair` |
+| `email`                     | String(320) | nullable                         |
+| `phone`                     | String(20)  | nullable                         |
+| `address`                   | Text        | nullable                         |
+| `logo_url`                  | String(500) | nullable                         |
+| `status`                    | String(20)  | NOT NULL, default: `trial`       |
+| `settings`                  | JSON        | nullable                         |
+| `trial_ends_at`             | DateTime    | nullable                         |
+| `created_at` / `updated_at` | DateTime    | auto-managed                     |
 
 Types: `auto_repair` · `parts_seller` · `both` &nbsp; Statuses: `trial` · `active` · `suspended`
 
 #### `tenant_membership`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `id` | Integer | PK |
-| `user_id` | Integer | FK → user, NOT NULL |
-| `tenant_id` | Integer | FK → tenant, NOT NULL |
-| `role` | String(20) | NOT NULL, default: `viewer` |
-| `is_default` | Boolean | default: false |
-| `invited_by` | Integer | FK → user |
-| `status` | String(20) | NOT NULL, default: `pending` |
-| `created_at` / `updated_at` | DateTime | auto-managed |
+
+| Column                      | Type       | Constraints                  |
+| --------------------------- | ---------- | ---------------------------- |
+| `id`                        | Integer    | PK                           |
+| `user_id`                   | Integer    | FK → user, NOT NULL          |
+| `tenant_id`                 | Integer    | FK → tenant, NOT NULL        |
+| `role`                      | String(20) | NOT NULL, default: `viewer`  |
+| `is_default`                | Boolean    | default: false               |
+| `invited_by`                | Integer    | FK → user                    |
+| `status`                    | String(20) | NOT NULL, default: `pending` |
+| `created_at` / `updated_at` | DateTime   | auto-managed                 |
 
 UNIQUE: `(user_id, tenant_id)` &nbsp; Roles: `owner` · `admin` · `manager` · `technician` · `parts_clerk` · `viewer`
 
@@ -685,71 +695,77 @@ UNIQUE: `(user_id, tenant_id)` &nbsp; Roles: `owner` · `admin` · `manager` · 
 <summary>&nbsp;&nbsp;<strong>Table Details — Business Tables</strong></summary><br>
 
 #### `customer`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `customer_id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, indexed |
-| `first_name` | String(25) | nullable |
-| `family_name` | String(25) | NOT NULL |
-| `email` | String(320) | NOT NULL |
-| `phone` | String(11) | NOT NULL |
+
+| Column        | Type        | Constraints          |
+| ------------- | ----------- | -------------------- |
+| `customer_id` | Integer     | PK                   |
+| `tenant_id`   | Integer     | FK → tenant, indexed |
+| `first_name`  | String(25)  | nullable             |
+| `family_name` | String(25)  | NOT NULL             |
+| `email`       | String(320) | NOT NULL             |
+| `phone`       | String(11)  | NOT NULL             |
 
 UNIQUE: `(tenant_id, email)`
 
 #### `job`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `job_id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, indexed |
-| `job_date` | Date | NOT NULL |
-| `customer` | Integer | FK → customer (CASCADE), NOT NULL |
-| `total_cost` | Numeric(6,2) | nullable |
-| `completed` | Boolean | default: false |
-| `paid` | Boolean | default: false |
-| `assigned_to` | Integer | FK → user |
+
+| Column        | Type         | Constraints                       |
+| ------------- | ------------ | --------------------------------- |
+| `job_id`      | Integer      | PK                                |
+| `tenant_id`   | Integer      | FK → tenant, indexed              |
+| `job_date`    | Date         | NOT NULL                          |
+| `customer`    | Integer      | FK → customer (CASCADE), NOT NULL |
+| `total_cost`  | Numeric(6,2) | nullable                          |
+| `completed`   | Boolean      | default: false                    |
+| `paid`        | Boolean      | default: false                    |
+| `assigned_to` | Integer      | FK → user                         |
 
 Computed: `is_overdue` (hybrid), `status_text`, `days_since_job`
 
 #### `service`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `service_id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, indexed |
-| `service_name` | String(100) | NOT NULL |
-| `cost` | Numeric(5,2) | NOT NULL |
-| `description` | String(500) | nullable |
-| `category` | String(50) | nullable |
-| `estimated_duration_minutes` | Integer | nullable |
-| `is_active` | Boolean | default: true |
+
+| Column                       | Type         | Constraints          |
+| ---------------------------- | ------------ | -------------------- |
+| `service_id`                 | Integer      | PK                   |
+| `tenant_id`                  | Integer      | FK → tenant, indexed |
+| `service_name`               | String(100)  | NOT NULL             |
+| `cost`                       | Numeric(5,2) | NOT NULL             |
+| `description`                | String(500)  | nullable             |
+| `category`                   | String(50)   | nullable             |
+| `estimated_duration_minutes` | Integer      | nullable             |
+| `is_active`                  | Boolean      | default: true        |
 
 #### `part`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `part_id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, indexed |
-| `part_name` | String(100) | NOT NULL |
-| `cost` | Numeric(5,2) | NOT NULL |
-| `sku` | String(50) | nullable |
-| `description` | String(500) | nullable |
-| `category` | String(50) | nullable |
-| `supplier` | String(100) | nullable |
-| `is_active` | Boolean | default: true |
+
+| Column        | Type         | Constraints          |
+| ------------- | ------------ | -------------------- |
+| `part_id`     | Integer      | PK                   |
+| `tenant_id`   | Integer      | FK → tenant, indexed |
+| `part_name`   | String(100)  | NOT NULL             |
+| `cost`        | Numeric(5,2) | NOT NULL             |
+| `sku`         | String(50)   | nullable             |
+| `description` | String(500)  | nullable             |
+| `category`    | String(50)   | nullable             |
+| `supplier`    | String(100)  | nullable             |
+| `is_active`   | Boolean      | default: true        |
 
 UNIQUE: `(tenant_id, sku)`
 
 #### `job_service` (junction)
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `job_id` | Integer | PK, FK → job (CASCADE) |
+
+| Column       | Type    | Constraints                |
+| ------------ | ------- | -------------------------- |
+| `job_id`     | Integer | PK, FK → job (CASCADE)     |
 | `service_id` | Integer | PK, FK → service (CASCADE) |
-| `qty` | Integer | NOT NULL, default: 1 |
+| `qty`        | Integer | NOT NULL, default: 1       |
 
 #### `job_part` (junction)
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `job_id` | Integer | PK, FK → job (CASCADE) |
+
+| Column    | Type    | Constraints             |
+| --------- | ------- | ----------------------- |
+| `job_id`  | Integer | PK, FK → job (CASCADE)  |
 | `part_id` | Integer | PK, FK → part (CASCADE) |
-| `qty` | Integer | NOT NULL, default: 1 |
+| `qty`     | Integer | NOT NULL, default: 1    |
 
 </details>
 </td>
@@ -762,45 +778,48 @@ UNIQUE: `(tenant_id, sku)`
 <summary>&nbsp;&nbsp;<strong>Table Details — Inventory & Billing</strong></summary><br>
 
 #### `inventory`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `inventory_id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, NOT NULL, indexed |
-| `part_id` | Integer | FK → part, NOT NULL |
-| `quantity_on_hand` | Integer | NOT NULL, default: 0 |
-| `reorder_level` | Integer | NOT NULL, default: 0 |
-| `reorder_quantity` | Integer | NOT NULL, default: 0 |
-| `location` | String(100) | nullable |
-| `created_at` / `updated_at` | DateTime | auto-managed |
+
+| Column                      | Type        | Constraints                    |
+| --------------------------- | ----------- | ------------------------------ |
+| `inventory_id`              | Integer     | PK                             |
+| `tenant_id`                 | Integer     | FK → tenant, NOT NULL, indexed |
+| `part_id`                   | Integer     | FK → part, NOT NULL            |
+| `quantity_on_hand`          | Integer     | NOT NULL, default: 0           |
+| `reorder_level`             | Integer     | NOT NULL, default: 0           |
+| `reorder_quantity`          | Integer     | NOT NULL, default: 0           |
+| `location`                  | String(100) | nullable                       |
+| `created_at` / `updated_at` | DateTime    | auto-managed                   |
 
 #### `inventory_transaction`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `transaction_id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, NOT NULL, indexed |
-| `inventory_id` | Integer | FK → inventory, NOT NULL |
-| `transaction_type` | String(20) | NOT NULL |
-| `quantity` | Integer | NOT NULL |
-| `reference_id` | Integer | nullable |
-| `reference_type` | String(50) | nullable |
-| `performed_by` | Integer | FK → user |
-| `notes` | Text | nullable |
-| `created_at` | DateTime | NOT NULL |
+
+| Column             | Type       | Constraints                    |
+| ------------------ | ---------- | ------------------------------ |
+| `transaction_id`   | Integer    | PK                             |
+| `tenant_id`        | Integer    | FK → tenant, NOT NULL, indexed |
+| `inventory_id`     | Integer    | FK → inventory, NOT NULL       |
+| `transaction_type` | String(20) | NOT NULL                       |
+| `quantity`         | Integer    | NOT NULL                       |
+| `reference_id`     | Integer    | nullable                       |
+| `reference_type`   | String(50) | nullable                       |
+| `performed_by`     | Integer    | FK → user                      |
+| `notes`            | Text       | nullable                       |
+| `created_at`       | DateTime   | NOT NULL                       |
 
 Transaction types: `received` · `sold` · `adjusted` · `returned`
 
 #### `subscription`
-| Column | Type | Constraints |
-|--------|------|-------------|
-| `id` | Integer | PK |
-| `tenant_id` | Integer | FK → tenant, UNIQUE, NOT NULL |
-| `stripe_customer_id` | String(255) | nullable |
-| `stripe_subscription_id` | String(255) | nullable |
-| `plan` | String(20) | NOT NULL, default: `free` |
-| `status` | String(20) | NOT NULL, default: `trialing` |
-| `current_period_start` / `current_period_end` | DateTime | nullable |
-| `trial_ends_at` | DateTime | nullable |
-| `created_at` / `updated_at` | DateTime | auto-managed |
+
+| Column                                        | Type        | Constraints                   |
+| --------------------------------------------- | ----------- | ----------------------------- |
+| `id`                                          | Integer     | PK                            |
+| `tenant_id`                                   | Integer     | FK → tenant, UNIQUE, NOT NULL |
+| `stripe_customer_id`                          | String(255) | nullable                      |
+| `stripe_subscription_id`                      | String(255) | nullable                      |
+| `plan`                                        | String(20)  | NOT NULL, default: `free`     |
+| `status`                                      | String(20)  | NOT NULL, default: `trialing` |
+| `current_period_start` / `current_period_end` | DateTime    | nullable                      |
+| `trial_ends_at`                               | DateTime    | nullable                      |
+| `created_at` / `updated_at`                   | DateTime    | auto-managed                  |
 
 Plans: `free` · `starter` · `professional` · `enterprise` &nbsp; Statuses: `trialing` · `active` · `past_due` · `canceled`
 
@@ -814,11 +833,11 @@ Plans: `free` · `starter` · `professional` · `enterprise` &nbsp; Statuses: `t
 
 <summary>&nbsp;&nbsp;<strong>Alembic Migration History</strong></summary><br>
 
-| Version | Description |
-|---------|-------------|
-| `001` | Create multi-tenant tables (tenant, membership, subscription, inventory, inventory_transaction). Add `tenant_id` and new columns to existing tables. |
-| `002` | Backfill default tenant (tenant_id=1) for existing data. |
-| `003` | Enforce `NOT NULL` constraints on `tenant_id`. Add unique constraints: `(tenant_id, email)` on customer, `(tenant_id, sku)` on part. |
+| Version | Description                                                                                                                                          |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `001`   | Create multi-tenant tables (tenant, membership, subscription, inventory, inventory_transaction). Add `tenant_id` and new columns to existing tables. |
+| `002`   | Backfill default tenant (tenant_id=1) for existing data.                                                                                             |
+| `003`   | Enforce `NOT NULL` constraints on `tenant_id`. Add unique constraints: `(tenant_id, email)` on customer, `(tenant_id, sku)` on part.                 |
 
 </details>
 </td>
@@ -921,21 +940,21 @@ Open [http://localhost:5000](http://localhost:5000)
 > [!WARNING]
 > Never commit `.env` files to version control. Use `.env.example` as a template.
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `FLASK_ENV` | 🔶 | `development` | `development` / `production` |
-| `SECRET_KEY` | ✅ (prod) | dev default | Flask session encryption key |
-| `DATABASE_URL` | ✅ (prod) | SQLite in-memory | Neon PostgreSQL connection string |
-| `DB_SSLMODE` | 🔶 | `require` | SSL mode: `require` / `prefer` / `disable` |
-| `GOOGLE_CLIENT_ID` | 🔶 | — | Google OAuth Client ID |
-| `GOOGLE_CLIENT_SECRET` | 🔶 | — | Google OAuth Client Secret |
-| `NEON_AUTH_URL` | 🔶 | — | Neon Auth URL for JWT verification |
-| `NEON_AUTH_JWKS_URL` | 🔶 | — | JWKS endpoint URL |
-| `STRIPE_API_KEY` | 🔶 | — | Stripe API key for billing |
-| `HOST` | 🔶 | `127.0.0.1` | Development server host |
-| `PORT` | 🔶 | `5000` | Development server port |
-| `LOG_LEVEL` | 🔶 | `INFO` | Logging level |
-| `LOG_TO_STDOUT` | 🔶 | `false` | Set `true` for cloud deployments |
+| Variable               | Required  | Default          | Description                                |
+| ---------------------- | --------- | ---------------- | ------------------------------------------ |
+| `FLASK_ENV`            | 🔶        | `development`    | `development` / `production`               |
+| `SECRET_KEY`           | ✅ (prod) | dev default      | Flask session encryption key               |
+| `DATABASE_URL`         | ✅ (prod) | SQLite in-memory | Neon PostgreSQL connection string          |
+| `DB_SSLMODE`           | 🔶        | `require`        | SSL mode: `require` / `prefer` / `disable` |
+| `GOOGLE_CLIENT_ID`     | 🔶        | —                | Google OAuth Client ID                     |
+| `GOOGLE_CLIENT_SECRET` | 🔶        | —                | Google OAuth Client Secret                 |
+| `NEON_AUTH_URL`        | 🔶        | —                | Neon Auth URL for JWT verification         |
+| `NEON_AUTH_JWKS_URL`   | 🔶        | —                | JWKS endpoint URL                          |
+| `STRIPE_API_KEY`       | 🔶        | —                | Stripe API key for billing                 |
+| `HOST`                 | 🔶        | `127.0.0.1`      | Development server host                    |
+| `PORT`                 | 🔶        | `5000`           | Development server port                    |
+| `LOG_LEVEL`            | 🔶        | `INFO`           | Logging level                              |
+| `LOG_TO_STDOUT`        | 🔶        | `false`          | Set `true` for cloud deployments           |
 
 > ✅ Required &nbsp; 🔶 Optional
 
@@ -1019,19 +1038,19 @@ git push heroku main
 
 <summary>&nbsp;&nbsp;<strong>Public Routes</strong></summary><br>
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/` | Home page with statistics dashboard |
-| GET/POST | `/login` | Login page and handler |
-| GET | `/logout` | Logout |
-| GET | `/about` | About page |
-| GET | `/help` | Help page |
-| GET | `/customers` | Customer list |
-| GET/POST | `/customers/new` | New customer form / create |
-| GET | `/customers/<id>` | Customer detail |
-| GET/POST | `/customers/<id>/edit` | Edit customer |
-| GET | `/api/search/customers?q=` | Customer search API (JSON) |
-| GET | `/api/customers/<id>` | Customer details API (JSON) |
+| Method   | Endpoint                   | Description                         |
+| -------- | -------------------------- | ----------------------------------- |
+| GET      | `/`                        | Home page with statistics dashboard |
+| GET/POST | `/login`                   | Login page and handler              |
+| GET      | `/logout`                  | Logout                              |
+| GET      | `/about`                   | About page                          |
+| GET      | `/help`                    | Help page                           |
+| GET      | `/customers`               | Customer list                       |
+| GET/POST | `/customers/new`           | New customer form / create          |
+| GET      | `/customers/<id>`          | Customer detail                     |
+| GET/POST | `/customers/<id>/edit`     | Edit customer                       |
+| GET      | `/api/search/customers?q=` | Customer search API (JSON)          |
+| GET      | `/api/customers/<id>`      | Customer details API (JSON)         |
 
 </details>
 </td>
@@ -1043,20 +1062,20 @@ git push heroku main
 
 <summary>&nbsp;&nbsp;<strong>Authentication Routes (/auth)</strong></summary><br>
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET/POST | `/auth/google` | Initiate Google OAuth |
-| GET | `/auth/google/callback` | Google OAuth callback |
-| GET | `/auth/callback` | Neon Auth JWT callback |
-| POST | `/auth/neon-callback` | JS client auth notification |
-| GET | `/auth/session` | Current session info (JSON) |
-| POST | `/auth/logout` | API logout |
-| POST | `/auth/verify-token` | Verify JWT token |
-| POST | `/auth/link-account` | Link Neon Auth to local account |
-| GET | `/auth/status` | OAuth provider config status |
-| GET | `/auth/select-tenant` | Tenant selection page |
-| POST | `/auth/switch-tenant` | Switch active tenant |
-| GET/POST | `/auth/register-organization` | Register new organization |
+| Method   | Endpoint                      | Description                     |
+| -------- | ----------------------------- | ------------------------------- |
+| GET/POST | `/auth/google`                | Initiate Google OAuth           |
+| GET      | `/auth/google/callback`       | Google OAuth callback           |
+| GET      | `/auth/callback`              | Neon Auth JWT callback          |
+| POST     | `/auth/neon-callback`         | JS client auth notification     |
+| GET      | `/auth/session`               | Current session info (JSON)     |
+| POST     | `/auth/logout`                | API logout                      |
+| POST     | `/auth/verify-token`          | Verify JWT token                |
+| POST     | `/auth/link-account`          | Link Neon Auth to local account |
+| GET      | `/auth/status`                | OAuth provider config status    |
+| GET      | `/auth/select-tenant`         | Tenant selection page           |
+| POST     | `/auth/switch-tenant`         | Switch active tenant            |
+| GET/POST | `/auth/register-organization` | Register new organization       |
 
 </details>
 </td>
@@ -1068,22 +1087,22 @@ git push heroku main
 
 <summary>&nbsp;&nbsp;<strong>Technician Routes (/technician)</strong></summary><br>
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/technician/dashboard` | Technician dashboard |
-| GET | `/technician/current-jobs?page=` | Current work orders (paginated) |
-| GET | `/technician/jobs/<id>` | Work order detail |
-| GET | `/technician/jobs/<id>/modify` | Modify work order |
-| POST | `/technician/jobs/<id>/add-service` | Add service to work order |
-| POST | `/technician/jobs/<id>/add-part` | Add part to work order |
-| POST | `/technician/jobs/<id>/complete` | Mark work order complete |
-| GET | `/technician/jobs/new` | New work order form |
-| POST | `/technician/jobs` | Create work order |
-| GET | `/technician/services` | Service catalog |
-| GET | `/technician/parts` | Parts list |
-| GET | `/technician/api/services` | All services (JSON) |
-| GET | `/technician/api/parts` | All parts (JSON) |
-| GET | `/technician/api/jobs/<id>/status` | Work order status (JSON) |
+| Method | Endpoint                            | Description                     |
+| ------ | ----------------------------------- | ------------------------------- |
+| GET    | `/technician/dashboard`             | Technician dashboard            |
+| GET    | `/technician/current-jobs?page=`    | Current work orders (paginated) |
+| GET    | `/technician/jobs/<id>`             | Work order detail               |
+| GET    | `/technician/jobs/<id>/modify`      | Modify work order               |
+| POST   | `/technician/jobs/<id>/add-service` | Add service to work order       |
+| POST   | `/technician/jobs/<id>/add-part`    | Add part to work order          |
+| POST   | `/technician/jobs/<id>/complete`    | Mark work order complete        |
+| GET    | `/technician/jobs/new`              | New work order form             |
+| POST   | `/technician/jobs`                  | Create work order               |
+| GET    | `/technician/services`              | Service catalog                 |
+| GET    | `/technician/parts`                 | Parts list                      |
+| GET    | `/technician/api/services`          | All services (JSON)             |
+| GET    | `/technician/api/parts`             | All parts (JSON)                |
+| GET    | `/technician/api/jobs/<id>/status`  | Work order status (JSON)        |
 
 </details>
 </td>
@@ -1095,28 +1114,28 @@ git push heroku main
 
 <summary>&nbsp;&nbsp;<strong>Administrator Routes (/administrator)</strong></summary><br>
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/administrator/dashboard` | Admin dashboard with charts |
-| GET | `/administrator/customers?page=` | Customer management (paginated) |
-| GET | `/administrator/billing` | Billing management |
-| GET | `/administrator/overdue-bills` | Overdue bills |
-| GET | `/administrator/pay-bills` | Payment processing |
-| POST | `/administrator/customers/<id>/pay` | Pay all customer bills |
-| POST | `/administrator/jobs/<id>/pay` | Pay single bill |
-| GET | `/administrator/reports` | Reports page |
-| GET/POST | `/administrator/settings` | Organization settings |
-| GET | `/administrator/team` | Team member management |
-| POST | `/administrator/team/invite` | Invite team member |
-| GET/POST | `/administrator/services` | Service catalog management |
-| GET/POST | `/administrator/parts` | Parts catalog management |
-| GET | `/administrator/inventory` | Inventory dashboard |
-| POST | `/administrator/inventory/adjust` | Adjust inventory stock |
-| GET | `/administrator/subscription` | Subscription management |
-| GET | `/administrator/api/dashboard/summary` | Dashboard summary (JSON) |
-| GET | `/administrator/api/billing/statistics` | Billing statistics (JSON) |
-| GET | `/administrator/api/customers/<id>/billing-summary` | Billing summary (JSON) |
-| GET | `/administrator/api/export/customers` | Export customer data (JSON) |
+| Method   | Endpoint                                            | Description                     |
+| -------- | --------------------------------------------------- | ------------------------------- |
+| GET      | `/administrator/dashboard`                          | Admin dashboard with charts     |
+| GET      | `/administrator/customers?page=`                    | Customer management (paginated) |
+| GET      | `/administrator/billing`                            | Billing management              |
+| GET      | `/administrator/overdue-bills`                      | Overdue bills                   |
+| GET      | `/administrator/pay-bills`                          | Payment processing              |
+| POST     | `/administrator/customers/<id>/pay`                 | Pay all customer bills          |
+| POST     | `/administrator/jobs/<id>/pay`                      | Pay single bill                 |
+| GET      | `/administrator/reports`                            | Reports page                    |
+| GET/POST | `/administrator/settings`                           | Organization settings           |
+| GET      | `/administrator/team`                               | Team member management          |
+| POST     | `/administrator/team/invite`                        | Invite team member              |
+| GET/POST | `/administrator/services`                           | Service catalog management      |
+| GET/POST | `/administrator/parts`                              | Parts catalog management        |
+| GET      | `/administrator/inventory`                          | Inventory dashboard             |
+| POST     | `/administrator/inventory/adjust`                   | Adjust inventory stock          |
+| GET      | `/administrator/subscription`                       | Subscription management         |
+| GET      | `/administrator/api/dashboard/summary`              | Dashboard summary (JSON)        |
+| GET      | `/administrator/api/billing/statistics`             | Billing statistics (JSON)       |
+| GET      | `/administrator/api/customers/<id>/billing-summary` | Billing summary (JSON)          |
+| GET      | `/administrator/api/export/customers`               | Export customer data (JSON)     |
 
 </details>
 </td>
@@ -1130,21 +1149,21 @@ git push heroku main
 
 **Billing (`/billing`):**
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/billing/plans` | Subscription plans |
-| POST | `/billing/checkout` | Create Stripe checkout session |
-| GET | `/billing/success` | Checkout success page |
-| POST | `/billing/portal` | Redirect to Stripe billing portal |
-| POST | `/billing/webhook` | Stripe webhook handler (no auth) |
+| Method | Endpoint            | Description                       |
+| ------ | ------------------- | --------------------------------- |
+| GET    | `/billing/plans`    | Subscription plans                |
+| POST   | `/billing/checkout` | Create Stripe checkout session    |
+| GET    | `/billing/success`  | Checkout success page             |
+| POST   | `/billing/portal`   | Redirect to Stripe billing portal |
+| POST   | `/billing/webhook`  | Stripe webhook handler (no auth)  |
 
 **Onboarding (`/onboarding`):**
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/onboarding/step/<num>` | Display onboarding step (1-4) |
-| POST | `/onboarding/step/<num>` | Save onboarding step data |
-| GET | `/onboarding/complete` | Onboarding completion |
+| Method | Endpoint                 | Description                   |
+| ------ | ------------------------ | ----------------------------- |
+| GET    | `/onboarding/step/<num>` | Display onboarding step (1-4) |
+| POST   | `/onboarding/step/<num>` | Save onboarding step data     |
+| GET    | `/onboarding/complete`   | Onboarding completion         |
 
 </details>
 </td>
@@ -1195,12 +1214,14 @@ gunicorn wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
 > Tests use SQLite in-memory database — no PostgreSQL setup needed.
 
 **Fixtures** (in `tests/conftest.py`):
+
 - `app` — Session-scoped Flask app with `TestingConfig`
 - `client` — Function-scoped test client
 - `authenticated_session` — Pre-authenticated technician (tenant_id=1)
 - `admin_session` — Pre-authenticated admin/owner (tenant_id=1)
 
 **Test Markers:**
+
 - `@pytest.mark.unit` — Unit tests
 - `@pytest.mark.integration` — Integration tests
 - `@pytest.mark.security` — Security tests
@@ -1247,6 +1268,7 @@ git checkout -b feature/your-feature-name
 - Ensure CI passes
 
 **Issue Reporting:**
+
 - 🐛 **Bug Reports**: Include reproduction steps and environment details
 - 💡 **Feature Requests**: Explain the use case and expected behavior
 - 📚 **Documentation**: Help improve our docs
@@ -1287,9 +1309,9 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
     <tr>
       <td align="center">
         <a href="https://github.com/ChanMeng666">
-          <img src="https://github.com/ChanMeng666.png?size=100" width="100px;" alt="Chan Meng"/>
+          <img src="https://github.com/ChanMeng666.png?size=100" width="100px;" alt="TorqueOS"/>
           <br />
-          <sub><b>Chan Meng</b></sub>
+          <sub><b>TorqueOS</b></sub>
         </a>
         <br />
         <small>Creator & Lead Developer</small>
@@ -1326,12 +1348,14 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
 
 <!-- Project Links -->
+
 [project-link]: https://repairos.chanmeng.org
 [github-issues-link]: https://github.com/ChanMeng666/automotive-repair-management-system/issues
 [pr-welcome-link]: https://github.com/ChanMeng666/automotive-repair-management-system/pulls
 [license-link]: ./LICENSE
 
 <!-- External Links -->
+
 [python-link]: https://python.org
 [flask-link]: https://flask.palletsprojects.com
 [sqlalchemy-link]: https://www.sqlalchemy.org
@@ -1341,6 +1365,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 [bootstrap-link]: https://getbootstrap.com
 
 <!-- Shield Badges -->
+
 [python-shield]: https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white
 [flask-shield]: https://img.shields.io/badge/Flask-3.1.3-000000?style=for-the-badge&logo=flask&logoColor=white
 [sqlalchemy-shield]: https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white
@@ -1353,11 +1378,11 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 [demo-shield-badge]: https://img.shields.io/badge/LIVE%20DEMO-ONLINE-55b467?labelColor=black&logo=heroku&style=for-the-badge
 
 <!-- Social Share Links -->
+
 [share-x-link]: https://x.com/intent/tweet?hashtags=flask,saas,opensource&text=Check%20out%20this%20multi-tenant%20automotive%20repair%20management%20platform&url=https%3A%2F%2Fgithub.com%2FChanMeng666%2Fautomotive-repair-management-system
 [share-telegram-link]: https://t.me/share/url?text=Multi-tenant%20automotive%20repair%20management%20SaaS%20platform&url=https%3A%2F%2Fgithub.com%2FChanMeng666%2Fautomotive-repair-management-system
 [share-reddit-link]: https://www.reddit.com/submit?title=Multi-Tenant%20Automotive%20Repair%20Management%20Platform&url=https%3A%2F%2Fgithub.com%2FChanMeng666%2Fautomotive-repair-management-system
 [share-linkedin-link]: https://linkedin.com/sharing/share-offsite/?url=https://github.com/ChanMeng666/automotive-repair-management-system
-
 [share-x-shield]: https://img.shields.io/badge/-share%20on%20x-black?labelColor=black&logo=x&logoColor=white&style=flat-square
 [share-telegram-shield]: https://img.shields.io/badge/-share%20on%20telegram-black?labelColor=black&logo=telegram&logoColor=white&style=flat-square
 [share-reddit-shield]: https://img.shields.io/badge/-share%20on%20reddit-black?labelColor=black&logo=reddit&logoColor=white&style=flat-square
