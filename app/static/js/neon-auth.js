@@ -5,20 +5,17 @@
 
 class NeonAuthClient {
     constructor(authUrl) {
-        this.authUrl = authUrl.replace(/\/$/, "");
+        this.authUrl = authUrl.replace(/\/$/, '');
     }
 
     async signInWithGoogle() {
         const callbackUrl = `${window.location.origin}/auth/callback`;
 
         const response = await fetch(`${this.authUrl}/sign-in/social`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                provider: "google",
-                callbackURL: callbackUrl,
-            }),
-            credentials: "include",
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ provider: 'google', callbackURL: callbackUrl }),
+            credentials: 'include'
         });
 
         const data = await response.json();
@@ -28,21 +25,21 @@ class NeonAuthClient {
             return;
         }
 
-        throw new Error("Failed to initiate Google sign-in");
+        throw new Error('Failed to initiate Google sign-in');
     }
 
-    async signUp(email, password, name = "") {
+    async signUp(email, password, name = '') {
         const response = await fetch(`${this.authUrl}/sign-up/email`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password, name }),
-            credentials: "include",
+            credentials: 'include'
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "Sign up failed");
+            throw new Error(data.message || 'Sign up failed');
         }
 
         return { success: true, data: data };
@@ -50,37 +47,33 @@ class NeonAuthClient {
 
     async verifyEmail(email, otp) {
         const response = await fetch(`${this.authUrl}/email-otp/verify-email`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, otp }),
-            credentials: "include",
+            credentials: 'include'
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "Verification failed");
+            throw new Error(data.message || 'Verification failed');
         }
 
-        const token =
-            (data.session && data.session.token) || data.token || null;
+        const token = (data.session && data.session.token) || data.token || null;
         return { success: true, token: token };
     }
 
-    async resendOtp(email, type = "email-verification") {
-        const response = await fetch(
-            `${this.authUrl}/email-otp/send-verification-otp`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, type }),
-                credentials: "include",
-            },
-        );
+    async resendOtp(email, type = 'email-verification') {
+        const response = await fetch(`${this.authUrl}/email-otp/send-verification-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, type }),
+            credentials: 'include'
+        });
 
         const data = await response.json();
         if (!response.ok) {
-            throw new Error(data.message || "Failed to resend code");
+            throw new Error(data.message || 'Failed to resend code');
         }
         return { success: true };
     }
@@ -88,68 +81,59 @@ class NeonAuthClient {
     async signInWithEmailPassword(email, password) {
         // Step 1: Call Neon Auth sign-in
         const response = await fetch(`${this.authUrl}/sign-in/email`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
-            credentials: "include",
+            credentials: 'include'
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "Sign in failed");
+            throw new Error(data.message || 'Sign in failed');
         }
 
         // Step 2: Extract token and user data
-        const token =
-            (data.session && data.session.token) || data.token || null;
+        const token = (data.session && data.session.token) || data.token || null;
         const callbackPayload = {};
         if (token) callbackPayload.token = token;
         if (data.user) callbackPayload.user = data.user;
 
         // Step 3: Notify Flask backend
-        const callbackResponse = await fetch("/auth/neon-callback", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+        const callbackResponse = await fetch('/auth/neon-callback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(callbackPayload),
-            credentials: "include",
+            credentials: 'include'
         });
 
         if (callbackResponse.ok) {
             const callbackData = await callbackResponse.json();
-            return {
-                success: true,
-                redirect: callbackData.redirect || "/dashboard",
-            };
+            return { success: true, redirect: callbackData.redirect || '/dashboard' };
         }
 
         // Step 4: Retry with full session from Neon Auth
         const fullSession = await this._getFullSession();
 
         if (fullSession && fullSession.user) {
-            const sessionToken = fullSession.session
-                ? fullSession.session.token
-                : null;
+            const sessionToken = fullSession.session ? fullSession.session.token : null;
             const retryPayload = { user: fullSession.user };
             if (sessionToken) retryPayload.token = sessionToken;
 
-            const retryResponse = await fetch("/auth/neon-callback", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const retryResponse = await fetch('/auth/neon-callback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(retryPayload),
-                credentials: "include",
+                credentials: 'include'
             });
 
             if (retryResponse.ok) {
                 const retryData = await retryResponse.json();
-                return {
-                    success: true,
-                    redirect: retryData.redirect || "/dashboard",
-                };
+                return { success: true, redirect: retryData.redirect || '/dashboard' };
             }
         }
 
-        throw new Error("Failed to establish session");
+        throw new Error('Failed to establish session');
     }
 
     /**
@@ -158,8 +142,8 @@ class NeonAuthClient {
     async getSession() {
         try {
             const response = await fetch(`${this.authUrl}/get-session`, {
-                method: "GET",
-                credentials: "include",
+                method: 'GET',
+                credentials: 'include'
             });
 
             if (!response.ok) return null;
@@ -170,7 +154,7 @@ class NeonAuthClient {
             if (data && data.token) return data;
             return null;
         } catch (error) {
-            console.error("getSession error:", error);
+            console.error('getSession error:', error);
             return null;
         }
     }
@@ -181,8 +165,8 @@ class NeonAuthClient {
     async _getFullSession() {
         try {
             const response = await fetch(`${this.authUrl}/get-session`, {
-                method: "GET",
-                credentials: "include",
+                method: 'GET',
+                credentials: 'include'
             });
 
             if (!response.ok) return null;
@@ -193,15 +177,15 @@ class NeonAuthClient {
             }
             return null;
         } catch (error) {
-            console.error("_getFullSession error:", error);
+            console.error('_getFullSession error:', error);
             return null;
         }
     }
 
     async signOut() {
         await fetch(`${this.authUrl}/sign-out`, {
-            method: "POST",
-            credentials: "include",
+            method: 'POST',
+            credentials: 'include'
         });
         return { success: true };
     }
@@ -209,27 +193,24 @@ class NeonAuthClient {
     async handleCallback() {
         try {
             const sessionData = await this.getSession();
-            const token = sessionData ? sessionData.token || null : null;
+            const token = sessionData ? (sessionData.token || null) : null;
 
             const payload = {};
             if (token) payload.token = token;
 
-            const response = await fetch("/auth/neon-callback", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const response = await fetch('/auth/neon-callback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
-                credentials: "include",
+                credentials: 'include'
             });
 
             if (response.ok) {
                 const data = await response.json();
-                return {
-                    success: true,
-                    redirect: data.redirect || "/dashboard",
-                };
+                return { success: true, redirect: data.redirect || '/dashboard' };
             }
         } catch (error) {
-            console.error("handleCallback error:", error);
+            console.error('handleCallback error:', error);
         }
 
         return { success: false };
@@ -237,37 +218,48 @@ class NeonAuthClient {
 
     async checkSessionVerifier() {
         const params = new URLSearchParams(window.location.search);
-        const verifier = params.get("neon_auth_session_verifier");
+        const verifier = params.get('neon_auth_session_verifier');
 
         if (!verifier) return false;
 
         try {
-            const cleanUrl = window.location.pathname || "/";
-            window.history.replaceState({}, "", cleanUrl);
+            // Clean the URL to remove the verifier param
+            const cleanUrl = window.location.pathname || '/';
+            window.history.replaceState({}, '', cleanUrl);
 
-            const response = await fetch("/auth/neon-callback", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ verifier: verifier }),
-                credentials: "include",
+            // Get full session from Neon Auth (includes user data)
+            const fullSession = await this._getFullSession();
+            const token = fullSession && fullSession.session ? fullSession.session.token : null;
+            const userData = fullSession ? fullSession.user : null;
+
+            // POST to Flask with token + user data
+            const payload = {};
+            if (token) payload.token = token;
+            if (userData) payload.user = userData;
+
+            const response = await fetch('/auth/neon-callback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                credentials: 'include'
             });
 
             if (response.ok) {
                 const data = await response.json();
-                window.location.href = data.redirect || "/dashboard";
+                window.location.href = data.redirect || '/dashboard';
                 return true;
             }
 
             return false;
         } catch (error) {
-            console.error("checkSessionVerifier error:", error);
+            console.error('checkSessionVerifier error:', error);
             return false;
         }
     }
 }
 
 // Initialize Neon Auth client when the page loads
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function() {
     const authUrlMeta = document.querySelector('meta[name="neon-auth-url"]');
     const authUrl = authUrlMeta ? authUrlMeta.content : null;
 
