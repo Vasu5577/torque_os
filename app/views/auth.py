@@ -72,14 +72,39 @@ def neon_callback():
     Accepts token from request body (preferred) or falls back to cookie.
     """
     try:
-        # Try token from request body first (works cross-origin)
-        session_token = None
         body = request.get_json(silent=True) or {}
+        
+        verifier = body.get('verifier')
+        session_token = body.get('token')
 
-        if body.get('token'):
-            session_token = body['token']
+        # Exchange verifier for session server-side
+        if verifier and not session_token:
+            neon_auth_url = current_app.config.get('NEON_AUTH_URL')
+            resp = http_requests.get(
+                f"{neon_auth_url}/get-session",
+                headers={"Authorization": f"Bearer {verifier}"},
+                timeout=5
+            )
+            if resp.ok:
+                data = resp.json()
+                session_token = data.get('session', {}).get('token')
+                if not session_token and data.get('user'):
+                    # Use fallback with user data directly
+                    client_user = data.get('user')
+                    db.session.rollback()
+                    fallback_payload = {
+                        'sub': client_user['id'],
+                        'email': client_user['email'],
+                        'name': client_user.get('name', ''),
+                        'email_verified': client_user.get('emailVerified', False),
+                    }
+                    user = User.authenticate_with_jwt(fallback_payload)
+                    if user:
+                        auth_service = AuthService()
+                        auth_service.establish_session(user)
+                        redirect_url = auth_service.resolve_post_auth_redirect(user.user_id)
+                        return jsonify({'success': True, 'user': user.to_dict(), 'redirect': redirect_url})
 
-        # Fall back to cookie
         if not session_token:
             session_token = request.cookies.get('better-auth.session_token')
 
@@ -89,34 +114,11 @@ def neon_callback():
         auth_service = AuthService()
         user = auth_service.authenticate_jwt(session_token)
 
-        if not user:
-            # Fallback: client may have passed user data from getSession()
-            client_user = body.get('user')
-            if client_user and client_user.get('id') and client_user.get('email'):
-                # Clean up any dirty DB transaction from failed lookups
-                try:
-                    db.session.rollback()
-                except Exception:
-                    pass
-                fallback_payload = {
-                    'sub': client_user['id'],
-                    'email': client_user['email'],
-                    'name': client_user.get('name', ''),
-                    'email_verified': client_user.get('emailVerified', False),
-                }
-                user = User.authenticate_with_jwt(fallback_payload)
-
         if user:
             auth_service.establish_session(user)
             redirect_url = auth_service.resolve_post_auth_redirect(user.user_id)
+            return jsonify({'success': True, 'user': user.to_dict(), 'redirect': redirect_url})
 
-            return jsonify({
-                'success': True,
-                'user': user.to_dict(),
-                'redirect': redirect_url,
-            })
-
-        logger.warning("neon-callback: authentication failed")
         return jsonify({'error': 'Invalid session'}), 401
 
     except Exception as e:
