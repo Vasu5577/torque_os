@@ -524,8 +524,8 @@ def register_organization():
         session['current_tenant_slug'] = tenant.slug
         session['current_tenant_name'] = tenant.name
         session['current_role'] = 'owner'
-
-        flash(f'Organization "{tenant.name}" created successfully!', 'success')
+        
+        flash(f'Organization {tenant.name} created successfully!', 'success')
         return redirect(url_for('onboarding.step', step_number=1))
     else:
         for error in errors:
