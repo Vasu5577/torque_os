@@ -234,7 +234,7 @@ Billing History & Overdue Bills - Administrator Portal
                                             {% if job.customer_id == selected_customer.customer_id %}
                                             <tr class="{% if job.overdue %}table-warning{% elif job.paid == 1 %}table-light{% endif %}">
                                                 <td>
-                                                    <span class="badge bg-primary">#{{ job.job_id }}</span>
+                                                    <span class="text-white badge bg-primary">#{{ job.job_id }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
@@ -254,12 +254,12 @@ Billing History & Overdue Bills - Administrator Portal
                                                 </td>
                                                 <td>
                                                     {% if job.completed %}
-                                                        <span class="badge bg-success">
+                                                        <span class="text-white badge bg-success">
                                                             <i class="ti ti-circle-check me-1"></i>
                                                             Completed
                                                         </span>
                                                     {% else %}
-                                                        <span class="badge bg-warning">
+                                                        <span class="text-white badge bg-warning">
                                                             <i class="ti ti-clock me-1"></i>
                                                             In Progress
                                                         </span>
@@ -267,18 +267,18 @@ Billing History & Overdue Bills - Administrator Portal
                                                 </td>
                                                 <td>
                                                     {% if job.paid %}
-                                                        <span class="badge bg-success">
+                                                        <span class="text-white badge bg-success">
                                                             <i class="ti ti-credit-card me-1"></i>
                                                             Paid
                                                         </span>
                                                     {% else %}
                                                         {% if job.overdue %}
-                                                            <span class="badge bg-danger">
+                                                            <span class="text-white badge bg-danger">
                                                                 <i class="ti ti-alert-triangle me-1"></i>
                                                                 Overdue
                                                             </span>
                                                         {% else %}
-                                                            <span class="badge bg-warning">
+                                                            <span class="text-white badge bg-warning">
                                                                 <i class="ti ti-clock me-1"></i>
                                                                 Pending
                                                             </span>
@@ -303,7 +303,7 @@ Billing History & Overdue Bills - Administrator Portal
                                             <!-- Display jobs for all customers -->
                                             <tr class="{% if job.overdue %}table-warning{% elif job.paid == 1 %}table-light{% endif %}">
                                                 <td>
-                                                    <span class="badge bg-primary">#{{ job.job_id }}</span>
+                                                    <span class="text-white badge bg-primary">#{{ job.job_id }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
@@ -323,12 +323,12 @@ Billing History & Overdue Bills - Administrator Portal
                                                 </td>
                                                 <td>
                                                     {% if job.completed %}
-                                                        <span class="badge bg-success">
+                                                        <span class="text-white badge bg-success">
                                                             <i class="ti ti-circle-check me-1"></i>
                                                             Completed
                                                         </span>
                                                     {% else %}
-                                                        <span class="badge bg-warning">
+                                                        <span class="text-white badge bg-warning">
                                                             <i class="ti ti-clock me-1"></i>
                                                             In Progress
                                                         </span>
@@ -336,18 +336,18 @@ Billing History & Overdue Bills - Administrator Portal
                                                 </td>
                                                 <td>
                                                     {% if job.paid %}
-                                                        <span class="badge bg-success">
+                                                        <span class="text-white badge bg-success">
                                                             <i class="ti ti-credit-card me-1"></i>
                                                             Paid
                                                         </span>
                                                     {% else %}
                                                         {% if job.overdue %}
-                                                            <span class="badge bg-danger">
+                                                            <span class="text-white badge bg-danger">
                                                                 <i class="ti ti-alert-triangle me-1"></i>
                                                                 Overdue
                                                             </span>
                                                         {% else %}
-                                                            <span class="badge bg-warning">
+                                                            <span class="text-white badge bg-warning">
                                                                 <i class="ti ti-clock me-1"></i>
                                                                 Pending
                                                             </span>

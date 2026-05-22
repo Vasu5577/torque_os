@@ -61,7 +61,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-light">{{ service.category|default('General') }}</span>
+                                        <span class="text-white badge bg-light">{{ service.category|default('General') }}</span>
                                     </td>
                                     <td>
                                         <span class="fw-bold text-success">${{
@@ -70,12 +70,12 @@
                                     <td>{{ service.duration|default('N/A') }}</td>
                                     <td>
                                         {% if service.active|default(true) %}
-                                        <span class="badge bg-success">
+                                        <span class="text-white badge bg-success">
                                             <i class="ti ti-circle-check me-1"></i>
                                             Active
                                         </span>
                                         {% else %}
-                                        <span class="badge bg-danger">
+                                        <span class="text-white badge bg-danger">
                                             <i class="ti ti-circle-x me-1"></i>
                                             Inactive
                                         </span>

@@ -122,17 +122,17 @@
                     <div>
                         <small class="text-muted d-block">Status</small>
                         {% if data.completed %}
-                        <span class="badge bg-success">
+                        <span class="text-white badge bg-success">
                             <i class="ti ti-circle-check me-1"></i>
                             Completed
                         </span>
                         {% elif data.paid %}
-                        <span class="badge bg-success">
+                        <span class="text-white badge bg-success">
                             <i class="ti ti-credit-card me-1"></i>
                             Paid
                         </span>
                         {% else %}
-                        <span class="badge bg-warning">
+                        <span class="text-white badge bg-warning">
                             <i class="ti ti-clock me-1"></i>
                             In Progress
                         </span>
@@ -261,12 +261,12 @@
                         <span class="fs-2 fw-bold text-success">${{ "%.2f"|format(data.total_cost|float) }}</span>
                         <div class="mt-1">
                             {% if data.paid %}
-                            <span class="badge bg-success">
+                            <span class="text-white badge bg-success">
                                 <i class="ti ti-circle-check me-1"></i>
                                 Paid
                             </span>
                             {% else %}
-                            <span class="badge bg-warning">
+                            <span class="text-white badge bg-warning">
                                 <i class="ti ti-clock me-1"></i>
                                 Unpaid
                             </span>

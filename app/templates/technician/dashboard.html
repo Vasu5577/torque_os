@@ -32,7 +32,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-warning-lt me-2"><i class="ti ti-clock"></i></span>
+                    <span class="text-white badge bg-warning-lt me-2"><i class="ti ti-clock"></i></span>
                     <div class="subheader">Active Jobs</div>
                 </div>
                 <div class="h1 mb-0">{{ active_jobs|default(0) }}</div>
@@ -43,7 +43,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-info-lt me-2"><i class="ti ti-calendar"></i></span>
+                    <span class="text-white badge bg-info-lt me-2"><i class="ti ti-calendar"></i></span>
                     <div class="subheader">Today's Jobs</div>
                 </div>
                 <div class="h1 mb-0">{{ todays_jobs|default(0) }}</div>
@@ -54,7 +54,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-success-lt me-2"><i class="ti ti-circle-check"></i></span>
+                    <span class="text-white badge bg-success-lt me-2"><i class="ti ti-circle-check"></i></span>
                     <div class="subheader">Completed This Week</div>
                 </div>
                 <div class="h1 mb-0">{{ completed_this_week|default(0) }}</div>
@@ -115,17 +115,17 @@
                     </td>
                     <td>
                         {% if job.completed %}
-                        <span class="badge bg-success">
+                        <span class="text-white badge bg-success">
                             <i class="ti ti-circle-check me-1"></i>
                             Completed
                         </span>
                         {% elif job.paid %}
-                        <span class="badge bg-success">
+                        <span class="text-white badge bg-success">
                             <i class="ti ti-credit-card me-1"></i>
                             Paid
                         </span>
                         {% else %}
-                        <span class="badge bg-warning">
+                        <span class="text-white badge bg-warning">
                             <i class="ti ti-clock me-1"></i>
                             In Progress
                         </span>
@@ -203,12 +203,12 @@
                     </td>
                     <td>
                         {% if job.completed %}
-                        <span class="badge bg-success">
+                        <span class="text-white badge bg-success">
                             <i class="ti ti-circle-check me-1"></i>
                             Completed
                         </span>
                         {% else %}
-                        <span class="badge bg-warning">
+                        <span class="text-white badge bg-warning">
                             <i class="ti ti-clock me-1"></i>
                             In Progress
                         </span>

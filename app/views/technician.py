@@ -106,20 +106,14 @@ def modify_job(job_id):
         if job_details.get('job_completed'):
             flash('Cannot modify completed work order', 'warning')
             return redirect(url_for('technician.job_detail', job_id=job_id))
-        
-        if request.method == 'POST':
-            return render_template('technician/modify_job.html',
-                       data=job_details['job_info'],
-                       services=job_details.get('services', []),
-                       parts=job_details.get('parts', []),
-                       all_services=job_details.get('all_services', []),
-                       all_parts=job_details.get('all_parts', []),
-                       job_completed=job_details.get('job_completed', False))
-            
-        return render_template('technician/job_detail.html',
-                       data=job_details['job_info'],
-                       services=job_details.get('services', []),
-                       parts=job_details.get('parts', []))
+
+        return render_template('technician/modify_job.html',
+                               data=job_details['job_info'],
+                               services=job_details.get('services', []),
+                               parts=job_details.get('parts', []),
+                               all_services=job_details.get('all_services', []),
+                               all_parts=job_details.get('all_parts', []),
+                               job_completed=job_details.get('job_completed', False))
 
     except Exception as e:
         logger.error(f"Failed to load work order modification page (ID: {job_id}): {e}")

@@ -67,12 +67,12 @@
                                     <td>{{ item.location|default('N/A') }}</td>
                                     <td>
                                         {% if needs_reorder %}
-                                        <span class="badge bg-danger">
+                                        <span class="text-white badge bg-danger">
                                             <i class="ti ti-alert-triangle me-1"></i>
                                             Reorder Needed
                                         </span>
                                         {% else %}
-                                        <span class="badge bg-success">
+                                        <span class="text-white badge bg-success">
                                             <i class="ti ti-circle-check me-1"></i>
                                             In Stock
                                         </span>
@@ -129,22 +129,22 @@
                                     </td>
                                     <td>
                                         {% if txn.type == 'in' or txn.type == 'received' %}
-                                        <span class="badge bg-success">
+                                        <span class="text-white badge bg-success">
                                             <i class="ti ti-arrow-down"></i>
                                             Received
                                         </span>
                                         {% elif txn.type == 'out' or txn.type == 'used' %}
-                                        <span class="badge bg-warning text-dark">
+                                        <span class="text-white badge bg-warning text-dark">
                                             <i class="ti ti-arrow-up"></i>
                                             Used
                                         </span>
                                         {% elif txn.type == 'adjustment' %}
-                                        <span class="badge bg-info">
+                                        <span class="text-white badge bg-info">
                                             <i class="ti ti-edit"></i>
                                             Adjustment
                                         </span>
                                         {% else %}
-                                        <span class="badge bg-light">{{ txn.type|title }}</span>
+                                        <span class="text-white badge bg-light">{{ txn.type|title }}</span>
                                         {% endif %}
                                     </td>
                                     <td>{{ txn.part_name|default('N/A') }}</td>

@@ -34,7 +34,7 @@
                     </h5>
                     <div class="text-center mb-4">
                         <div class="h2 fw-bold text-primary">{{ current_plan.name|default('Free') }}</div>
-                        <span class="badge {% if current_plan.status|default('active') == 'active' %}bg-success{% else %}bg-warning{% endif %}">
+                        <span class="text-white badge {% if current_plan.status|default('active') == 'active' %}bg-success{% else %}bg-warning{% endif %}">
                             <i class="ti ti-{% if current_plan.status|default('active') == 'active' %}circle-check{% else %}clock{% endif %} me-1"></i>
                             {{ current_plan.status|default('Active')|title }}
                         </span>

@@ -89,12 +89,12 @@ Modify Job #{{ data.job_id }} - TorqueOS
                             <label class="info-label">Completion Status</label>
                             <div class="info-value">
                                 {% if data.completed %}
-                                <span class="badge bg-success">
+                                <span class="text-white badge bg-success">
                                     <i class="ti ti-circle-check me-1"></i>
                                     Completed
                                 </span>
                                 {% else %}
-                                <span class="badge bg-warning">
+                                <span class="text-white badge bg-warning">
                                     <i class="ti ti-clock me-1"></i>
                                     In Progress
                                 </span>
@@ -107,12 +107,12 @@ Modify Job #{{ data.job_id }} - TorqueOS
                             <label class="info-label">Payment Status</label>
                             <div class="info-value">
                                 {% if data.paid %}
-                                <span class="badge bg-success">
+                                <span class="text-white badge bg-success">
                                     <i class="ti ti-credit-card me-1"></i>
                                     Paid
                                 </span>
                                 {% else %}
-                                <span class="badge bg-danger">
+                                <span class="text-white badge bg-danger">
                                     <i class="ti ti-alert-triangle me-1"></i>
                                     Unpaid
                                 </span>
@@ -189,7 +189,7 @@ Modify Job #{{ data.job_id }} - TorqueOS
                                     <h6 class="mb-1">{{ service.service_name }}</h6>
                                     <small class="text-muted">Quantity: {{ service.qty }}</small>
                                 </div>
-                                <span class="badge bg-info rounded-pill">{{ service.qty }}</span>
+                                <span class="text-white badge bg-info rounded-pill">{{ service.qty }}</span>
                             </div>
                         </div>
                         {% endfor %}
@@ -266,7 +266,7 @@ Modify Job #{{ data.job_id }} - TorqueOS
                                     <h6 class="mb-1">{{ part.part_name }}</h6>
                                     <small class="text-muted">Quantity: {{ part.qty }}</small>
                                 </div>
-                                <span class="badge bg-success rounded-pill">{{ part.qty }}</span>
+                                <span class="text-white badge bg-success rounded-pill">{{ part.qty }}</span>
                             </div>
                         </div>
                         {% endfor %}

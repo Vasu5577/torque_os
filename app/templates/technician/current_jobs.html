@@ -35,7 +35,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-warning-lt me-2"><i class="ti ti-clock"></i></span>
+                    <span class="text-white badge bg-warning-lt me-2"><i class="ti ti-clock"></i></span>
                     <div class="subheader">Active Jobs</div>
                 </div>
                 <div class="h1 mb-0">{{ data|length }}</div>
@@ -46,7 +46,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-info-lt me-2"><i class="ti ti-calendar"></i></span>
+                    <span class="text-white badge bg-info-lt me-2"><i class="ti ti-calendar"></i></span>
                     <div class="subheader">This Week</div>
                 </div>
                 <div class="h1 mb-0">{{ data|selectattr('job_date')|list|length if data else 0 }}</div>
@@ -57,7 +57,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-success-lt me-2"><i class="ti ti-currency-dollar"></i></span>
+                    <span class="text-white badge bg-success-lt me-2"><i class="ti ti-currency-dollar"></i></span>
                     <div class="subheader">Total Value</div>
                 </div>
                 <div class="h1 mb-0">${{ "%.0f"|format(data|sum(attribute='total_cost') or 0) }}</div>
@@ -68,7 +68,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
-                    <span class="badge bg-danger-lt me-2"><i class="ti ti-alert-triangle"></i></span>
+                    <span class="text-white badge bg-danger-lt me-2"><i class="ti ti-alert-triangle"></i></span>
                     <div class="subheader">Unpaid</div>
                 </div>
                 <div class="h1 mb-0">{{ data|selectattr('paid')|list|length if data else 0 }}</div>
@@ -185,12 +185,12 @@
                         </td>
                         <td>
                             {% if record.paid == 1 %}
-                            <span class="badge bg-success">
+                            <span class="text-white badge bg-success">
                                 <i class="ti ti-circle-check me-1"></i>
                                 Paid
                             </span>
                             {% else %}
-                            <span class="badge bg-warning">
+                            <span class="text-white badge bg-warning">
                                 <i class="ti ti-clock me-1"></i>
                                 Unpaid
                             </span>
@@ -355,7 +355,7 @@
             rows.forEach(row => {
                 const customerName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
                 const jobId = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-                const paymentStatus = row.querySelector('.badge').textContent.toLowerCase();
+                const paymentStatus = row.querySelector('.text-white badge').textContent.toLowerCase();
 
                 let matchesSearch = true;
                 let matchesStatus = true;
@@ -451,7 +451,7 @@
                 <div class="col-md-6">
                     <h6>Job Information</h6>
                     <p><strong>Job ID:</strong> #${jobId}</p>
-                    <p><strong>Status:</strong> <span class="badge bg-warning">In Progress</span></p>
+                    <p><strong>Status:</strong> <span class="text-white badge bg-warning">In Progress</span></p>
                     <p><strong>Created:</strong> Today</p>
                 </div>
                 <div class="col-md-6">

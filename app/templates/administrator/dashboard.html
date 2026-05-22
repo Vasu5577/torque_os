@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                        <span class="badge bg-primary-lt me-2"><i class="ti ti-briefcase"></i></span>
+                        <span class="text-white badge bg-primary-lt me-2"><i class="ti ti-briefcase"></i></span>
                         <div class="subheader">Total Jobs</div>
                     </div>
                     <div class="h1 mb-0">{{ job_stats.total_jobs | default(0) }}</div>
@@ -45,7 +45,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                        <span class="badge bg-success-lt me-2"><i class="ti ti-currency-dollar"></i></span>
+                        <span class="text-white badge bg-success-lt me-2"><i class="ti ti-currency-dollar"></i></span>
                         <div class="subheader">Revenue</div>
                     </div>
                     <div class="h1 mb-0">${{ "%.2f"|format(billing_stats.total_revenue|default(0)|float) }}</div>
@@ -56,7 +56,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                        <span class="badge bg-info-lt me-2"><i class="ti ti-users"></i></span>
+                        <span class="text-white badge bg-info-lt me-2"><i class="ti ti-users"></i></span>
                         <div class="subheader">Customers</div>
                     </div>
                     <div class="h1 mb-0">{{ total_customers|default(0) }}</div>
@@ -67,7 +67,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                        <span class="badge bg-warning-lt me-2"><i class="ti ti-alert-triangle"></i></span>
+                        <span class="text-white badge bg-warning-lt me-2"><i class="ti ti-alert-triangle"></i></span>
                         <div class="subheader">Overdue Bills</div>
                     </div>
                     <div class="h1 mb-0">{{ overdue_bills|length if overdue_bills else 0 }}</div>
@@ -133,12 +133,12 @@
                             </div>
                             <div>
                                 {% if job.completed == 1 %}
-                                <span class="badge bg-success">
+                                <span class="text-white badge bg-success">
                                     <i class="ti ti-circle-check me-1"></i>
                                     Completed
                                 </span>
                                 {% else %}
-                                <span class="badge bg-warning">
+                                <span class="text-white badge bg-warning">
                                     <i class="ti ti-clock me-1"></i>
                                     In Progress
                                 </span>

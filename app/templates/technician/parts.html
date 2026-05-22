@@ -74,7 +74,7 @@
                     </td>
                     <td>
                         {% if part.category %}
-                        <span class="badge bg-primary bg-opacity-10 text-primary">{{ part.category }}</span>
+                        <span class="text-white badge bg-primary bg-opacity-10 text-primary">{{ part.category }}</span>
                         {% else %}
                         <span class="text-muted">--</span>
                         {% endif %}
@@ -90,7 +90,7 @@
                                 class="{% if part.stock_level <= 5 %}text-danger fw-semibold{% elif part.stock_level <= 20 %}text-warning fw-semibold{% else %}fw-medium{% endif %}">
                                 {{ part.stock_level }}
                             </span>
-                            {% if part.stock_level <= 5 %} <span class="badge bg-danger bg-opacity-10 text-danger ms-1"
+                            {% if part.stock_level <= 5 %} <span class="text-white badge bg-danger bg-opacity-10 text-danger ms-1"
                                 style="font-size: 0.7rem;">Low</span>
                                 {% endif %}
                         </div>
@@ -110,12 +110,12 @@
                     </td>
                     <td>
                         {% if part.active is defined and not part.active %}
-                        <span class="badge bg-danger">
+                        <span class="text-white badge bg-danger">
                             <i class="ti ti-circle-x me-1"></i>
                             Inactive
                         </span>
                         {% else %}
-                        <span class="badge bg-success">
+                        <span class="text-white badge bg-success">
                             <i class="ti ti-circle-check me-1"></i>
                             Active
                         </span>

@@ -65,7 +65,7 @@
                                         <code>{{ part.sku|default('N/A') }}</code>
                                     </td>
                                     <td>
-                                        <span class="badge bg-light">{{ part.category|default('General') }}</span>
+                                        <span class="text-white badge bg-light">{{ part.category|default('General') }}</span>
                                     </td>
                                     <td>
                                         <span class="fw-bold text-success">${{ "%.2f"|format(part.cost|default(0)|float)
@@ -74,12 +74,12 @@
                                     <td>{{ part.supplier|default('N/A') }}</td>
                                     <td>
                                         {% if part.active|default(true) %}
-                                        <span class="badge bg-success">
+                                        <span class="text-white badge bg-success">
                                             <i class="ti ti-circle-check me-1"></i>
                                             Active
                                         </span>
                                         {% else %}
-                                        <span class="badge bg-danger">
+                                        <span class="text-white badge bg-danger">
                                             <i class="ti ti-circle-x me-1"></i>
                                             Inactive
                                         </span>

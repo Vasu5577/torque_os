@@ -28,7 +28,7 @@
         padding: 1.75rem;
     }
 
-    .business-badge {
+    .business-text-white badge {
         font-size: 0.75rem;
         padding: 0.25rem 0.75rem;
         border-radius: 999px;
@@ -37,17 +37,17 @@
         letter-spacing: 0.5px;
     }
 
-    .badge-auto-repair {
+    .text-white badge-auto-repair {
         background: rgba(30, 58, 95, 0.1);
         color: var(--primary);
     }
 
-    .badge-parts-seller {
+    .text-white badge-parts-seller {
         background: rgba(232, 126, 4, 0.1);
         color: var(--accent);
     }
 
-    .badge-both {
+    .text-white badge-both {
         background: rgba(16, 185, 129, 0.1);
         color: #059669;
     }
@@ -78,7 +78,7 @@
                                         <i class="ti ti-building text-primary" style="font-size: 1.5rem;"></i>
                                     </div>
                                     <span
-                                        class="business-badge {% if tenant.business_type == 'Auto Repair' %}badge-auto-repair{% elif tenant.business_type == 'Parts Seller' %}badge-parts-seller{% else %}badge-both{% endif %}">
+                                        class="business-text-white badge {% if tenant.business_type == 'Auto Repair' %}text-white badge-auto-repair{% elif tenant.business_type == 'Parts Seller' %}text-white badge-parts-seller{% else %}text-white badge-both{% endif %}">
                                         {{ tenant.business_type }}
                                     </span>
                                 </div>
