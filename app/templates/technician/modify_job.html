@@ -144,7 +144,7 @@ Modify Job #{{ data.job_id }} - TorqueOS
                         <i class="ti ti-circle-plus me-2"></i>
                         Add New Service
                     </h6>
-                    <form method="POST" action="{{ url_for('add_service_to_job', job_id=data.job_id) }}">
+                    <form method="POST" action="{{ url_for('technician.add_service_to_job', job_id=data.job_id) }}">
                         <div class="row g-3">
                             <div class="col-12">
                                 <label class="form-label">Service Type</label>
@@ -221,7 +221,7 @@ Modify Job #{{ data.job_id }} - TorqueOS
                         <i class="ti ti-circle-plus me-2"></i>
                         Add New Part
                     </h6>
-                    <form method="POST" action="{{ url_for('add_part_to_job', job_id=data.job_id) }}">
+                    <form method="POST" action="{{ url_for('technician.add_part_to_job', job_id=data.job_id) }}">
                         <div class="row g-3">
                             <div class="col-12">
                                 <label class="form-label">Part Type</label>

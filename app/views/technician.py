@@ -43,17 +43,17 @@ def current_jobs(page=1, per_page=10):
         jobs, total, total_pages = job_service.get_current_jobs(page, per_page)
 
         return render_template('technician/current_jobs.html',
-                             jobs=jobs,
-                             page=page,
-                             per_page=per_page,
-                             total=total,
-                             total_pages=total_pages)
+                            data=jobs,
+                            page=page,
+                            per_page=per_page,
+                            total=total,
+                            total_pages=total_pages)
 
     except Exception as e:
         logger.error(f"Failed to get current work orders: {e}")
         flash('Failed to load work orders', 'error')
         return render_template('technician/current_jobs.html',
-                             jobs=[],
+                             data=[],
                              page=1,
                              per_page=per_page,
                              total=0,
@@ -77,7 +77,9 @@ def job_detail(job_id):
             return redirect(url_for('technician.current_jobs'))
 
         return render_template('technician/job_detail.html',
-                             job_details=job_details)
+                       data=job_details['job_info'],
+                       services=job_details.get('services', []),
+                       parts=job_details.get('parts', []))
 
     except Exception as e:
         logger.error(f"Failed to get work order details (ID: {job_id}): {e}")
@@ -85,7 +87,7 @@ def job_detail(job_id):
         return redirect(url_for('technician.current_jobs'))
 
 
-@technician_bp.route('/jobs/<int:job_id>/modify')
+@technician_bp.route('/jobs/<int:job_id>/modify', methods=['GET', 'POST'])
 @handle_database_errors
 @log_function_call
 def modify_job(job_id):
@@ -104,9 +106,20 @@ def modify_job(job_id):
         if job_details.get('job_completed'):
             flash('Cannot modify completed work order', 'warning')
             return redirect(url_for('technician.job_detail', job_id=job_id))
-
-        return render_template('technician/modify_job.html',
-                             job_details=job_details)
+        
+        if request.method == 'POST':
+            return render_template('technician/modify_job.html',
+                       data=job_details['job_info'],
+                       services=job_details.get('services', []),
+                       parts=job_details.get('parts', []),
+                       all_services=job_details.get('all_services', []),
+                       all_parts=job_details.get('all_parts', []),
+                       job_completed=job_details.get('job_completed', False))
+            
+        return render_template('technician/job_detail.html',
+                       data=job_details['job_info'],
+                       services=job_details.get('services', []),
+                       parts=job_details.get('parts', []))
 
     except Exception as e:
         logger.error(f"Failed to load work order modification page (ID: {job_id}): {e}")
@@ -124,8 +137,8 @@ def add_service_to_job(job_id):
 
     try:
         service_id = request.form.get('service_id', type=int)
-        quantity = request.form.get('quantity', type=int)
-
+        quantity = request.form.get('service_qty', type=int)
+        
         if not service_id or not validate_positive_integer(service_id):
             flash('Please select a valid service', 'error')
             return redirect(url_for('technician.modify_job', job_id=job_id))
@@ -140,6 +153,7 @@ def add_service_to_job(job_id):
             flash('Service added successfully!', 'success')
         else:
             for error in errors:
+                logger.error(f"Failed to add service: {error}")
                 flash(error, 'error')
 
         return redirect(url_for('technician.modify_job', job_id=job_id))
@@ -176,6 +190,7 @@ def add_part_to_job(job_id):
             flash('Part added successfully!', 'success')
         else:
             for error in errors:
+                logger.error(f"Failed to add part: {error}")
                 flash(error, 'error')
 
         return redirect(url_for('technician.modify_job', job_id=job_id))
@@ -211,7 +226,7 @@ def complete_job(job_id):
         return redirect(url_for('technician.modify_job', job_id=job_id))
 
 
-@technician_bp.route('/jobs/new')
+@technician_bp.route('/jobs/new', methods=['GET', 'POST'])
 @handle_database_errors
 def new_job():
     """Create new work order page"""
@@ -219,13 +234,26 @@ def new_job():
     if redirect_response:
         return redirect_response
 
+    if request.method == 'POST':
+        try:
+            success, errors, job = job_service.create_job(
+                customer_id=int(request.form.get('customer_id')),
+                job_date=date.fromisoformat(request.form.get('job_date')))
+            if success:
+                flash('Work order created successfully', 'success')
+                return redirect(url_for('technician.current_jobs'))
+            else:
+                for error in errors:
+                    flash(error, 'error')
+        except Exception as e:
+            logger.error(f"Failed to create work order: {e}")
+            flash('Failed to create work order', 'error')
+
     try:
         customers = customer_service.get_all_customers()
-
         return render_template('technician/new_job.html',
                              customers=customers,
                              min_date=date.today().isoformat())
-
     except Exception as e:
         logger.error(f"Failed to load new work order page: {e}")
         flash('Failed to load page', 'error')
