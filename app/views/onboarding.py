@@ -193,7 +193,7 @@ def _save_services(tenant_id):
             )
             db.session.add(service)
             db.session.commit()
-            flash(f'Service "{service_name}" added!', 'success')
+            flash(f'Service {service_name} added!', 'success')
         except (ValueError, Exception) as e:
             logger.error(f"Failed to add service during onboarding: {e}")
             db.session.rollback()
@@ -226,7 +226,7 @@ def _save_parts(tenant_id):
             )
             db.session.add(part)
             db.session.commit()
-            flash(f'Part "{part_name}" added!', 'success')
+            flash(f'Part {part_name} added!', 'success')
         except (ValueError, Exception) as e:
             logger.error(f"Failed to add part during onboarding: {e}")
             db.session.rollback()

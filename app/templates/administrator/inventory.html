@@ -27,7 +27,8 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
+                <div class="card-header"
+                    style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
                     <h5 class="card-title mb-0 d-flex align-items-center gap-2" style="color: white;">
                         <i class="ti ti-package"></i>
                         Stock Levels
@@ -47,16 +48,18 @@
                             </thead>
                             <tbody>
                                 {% for item in inventory|default([]) %}
-                                {% set needs_reorder = item.on_hand|default(0)|int <= item.reorder_level|default(0)|int %}
-                                <tr class="{% if needs_reorder %}table-warning{% endif %}">
+                                {% set needs_reorder = item.on_hand|default(0)|int <= item.reorder_level|default(0)|int
+                                    %} <tr class="{% if needs_reorder %}table-warning{% endif %}">
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <i class="ti ti-puzzle text-{% if needs_reorder %}warning{% else %}primary{% endif %} me-2"></i>
+                                            <i
+                                                class="ti ti-puzzle text-{% if needs_reorder %}warning{% else %}primary{% endif %} me-2"></i>
                                             <strong>{{ item.part_name|default(item.name) }}</strong>
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="fw-bold {% if needs_reorder %}text-danger{% else %}text-success{% endif %}">
+                                        <span
+                                            class="fw-bold {% if needs_reorder %}text-danger{% else %}text-success{% endif %}">
                                             {{ item.on_hand|default(0) }}
                                         </span>
                                     </td>
@@ -75,15 +78,15 @@
                                         </span>
                                         {% endif %}
                                     </td>
-                                </tr>
-                                {% else %}
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted py-4">
-                                        <i class="ti ti-package mb-2 d-block mx-auto" style="font-size: 48px;"></i>
-                                        No inventory data available
-                                    </td>
-                                </tr>
-                                {% endfor %}
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            <i class="ti ti-package mb-2 d-block mx-auto" style="font-size: 48px;"></i>
+                                            No inventory data available
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -141,13 +144,15 @@
                                             Adjustment
                                         </span>
                                         {% else %}
-                                        <span class="badge bg-secondary">{{ txn.type|title }}</span>
+                                        <span class="badge bg-light">{{ txn.type|title }}</span>
                                         {% endif %}
                                     </td>
                                     <td>{{ txn.part_name|default('N/A') }}</td>
                                     <td>
-                                        <span class="fw-bold {% if txn.type == 'in' or txn.type == 'received' %}text-success{% else %}text-danger{% endif %}">
-                                            {% if txn.type == 'in' or txn.type == 'received' %}+{% else %}-{% endif %}{{ txn.quantity|default(0) }}
+                                        <span
+                                            class="fw-bold {% if txn.type == 'in' or txn.type == 'received' %}text-success{% else %}text-danger{% endif %}">
+                                            {% if txn.type == 'in' or txn.type == 'received' %}+{% else %}-{% endif %}{{
+                                            txn.quantity|default(0) }}
                                         </span>
                                     </td>
                                     <td>{{ txn.performed_by|default('System') }}</td>

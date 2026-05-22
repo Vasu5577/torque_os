@@ -31,7 +31,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
+                <div class="card-header"
+                    style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
                     <h5 class="card-title mb-0 d-flex align-items-center gap-2" style="color: white;">
                         <i class="ti ti-list"></i>
                         Services
@@ -60,10 +61,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-secondary">{{ service.category|default('General') }}</span>
+                                        <span class="badge bg-light">{{ service.category|default('General') }}</span>
                                     </td>
                                     <td>
-                                        <span class="fw-bold text-success">${{ "%.2f"|format(service.cost|default(0)|float) }}</span>
+                                        <span class="fw-bold text-success">${{
+                                            "%.2f"|format(service.cost|default(0)|float) }}</span>
                                     </td>
                                     <td>{{ service.duration|default('N/A') }}</td>
                                     <td>
@@ -85,10 +87,14 @@
                                                 <i class="ti ti-pencil"></i>
                                             </button>
                                             <form method="post" action="#" class="d-inline">
-                                                <input type="hidden" name="service_id" value="{{ service.id|default(service.service_id|default('')) }}">
+                                                <input type="hidden" name="service_id"
+                                                    value="{{ service.id|default(service.service_id|default('')) }}">
                                                 <input type="hidden" name="action" value="toggle">
-                                                <button type="submit" class="btn btn-sm btn-outline-{% if service.active|default(true) %}warning{% else %}success{% endif %}" title="{% if service.active|default(true) %}Deactivate{% else %}Activate{% endif %}">
-                                                    <i class="ti ti-{% if service.active|default(true) %}player-pause{% else %}player-play{% endif %}"></i>
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-outline-{% if service.active|default(true) %}warning{% else %}success{% endif %}"
+                                                    title="{% if service.active|default(true) %}Deactivate{% else %}Activate{% endif %}">
+                                                    <i
+                                                        class="ti ti-{% if service.active|default(true) %}player-pause{% else %}player-play{% endif %}"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -127,7 +133,8 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label">Service Name *</label>
-                            <input type="text" class="form-control" name="service_name" required placeholder="e.g. Oil Change">
+                            <input type="text" class="form-control" name="service_name" required
+                                placeholder="e.g. Oil Change">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Category</label>
@@ -143,7 +150,8 @@
                             <label class="form-label">Cost *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" name="cost" step="0.01" min="0" required placeholder="0.00">
+                                <input type="number" class="form-control" name="cost" step="0.01" min="0" required
+                                    placeholder="0.00">
                             </div>
                         </div>
                         <div class="col-12">

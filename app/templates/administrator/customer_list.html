@@ -86,7 +86,8 @@ Customer Management - Administrator Portal
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
+                <div class="card-header"
+                    style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
                     <h5 class="card-title mb-0 d-flex align-items-center gap-2" style="color: white;">
                         <i class="ti ti-users"></i>
                         Customer List & Job Scheduling
@@ -106,7 +107,8 @@ Customer Management - Administrator Portal
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Search Text</label>
-                                <input type="text" class="form-control" name="search_text" placeholder="Enter search term...">
+                                <input type="text" class="form-control" name="search_text"
+                                    placeholder="Enter search term...">
                             </div>
                             <div class="col-md-3 d-flex align-items-end">
                                 <button class="btn btn-outline-primary w-100" type="submit">
@@ -135,10 +137,11 @@ Customer Management - Administrator Portal
                                     {% for customer in customers %}
                                     <tr>
                                         <td>
-                                            <input type="radio" name="customer_select" value="{{ customer.customer_id }}" class="form-check-input">
+                                            <input type="radio" name="customer_select"
+                                                value="{{ customer.customer_id }}" class="form-check-input">
                                         </td>
                                         <td>
-                                            <span class="badge bg-secondary">#{{ customer.customer_id }}</span>
+                                            <span class="badge bg-light">#{{ customer.customer_id }}</span>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
@@ -234,36 +237,38 @@ Customer Management - Administrator Portal
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="fw-bold text-success">${{ "%.2f"|format(job.total_cost|float) }}</span>
+                                        <span class="fw-bold text-success">${{ "%.2f"|format(job.total_cost|float)
+                                            }}</span>
                                     </td>
                                     <td>
                                         {% if job.completed == 1 %}
-                                            <span class="badge bg-success">
-                                                <i class="ti ti-circle-check me-1"></i>
-                                                Completed
-                                            </span>
+                                        <span class="badge bg-success">
+                                            <i class="ti ti-circle-check me-1"></i>
+                                            Completed
+                                        </span>
                                         {% else %}
-                                            <span class="badge bg-warning">
-                                                <i class="ti ti-clock me-1"></i>
-                                                In Progress
-                                            </span>
+                                        <span class="badge bg-warning">
+                                            <i class="ti ti-clock me-1"></i>
+                                            In Progress
+                                        </span>
                                         {% endif %}
                                     </td>
                                     <td>
                                         {% if job.paid == 1 %}
-                                            <span class="badge bg-success">
-                                                <i class="ti ti-credit-card me-1"></i>
-                                                Paid
-                                            </span>
+                                        <span class="badge bg-success">
+                                            <i class="ti ti-credit-card me-1"></i>
+                                            Paid
+                                        </span>
                                         {% else %}
-                                            <span class="badge bg-danger">
-                                                <i class="ti ti-alert-triangle me-1"></i>
-                                                Unpaid
-                                            </span>
+                                        <span class="badge bg-danger">
+                                            <i class="ti ti-alert-triangle me-1"></i>
+                                            Unpaid
+                                        </span>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <a href="{{ url_for('technician.modify_job', job_id=job.job_id) }}" class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ url_for('technician.modify_job', job_id=job.job_id) }}"
+                                            class="btn btn-sm btn-outline-primary">
                                             <i class="ti ti-pencil"></i>
                                         </a>
                                     </td>
@@ -298,15 +303,18 @@ Customer Management - Administrator Portal
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Family Name *</label>
-                            <input type="text" class="form-control" name="family_name" required placeholder="Enter family name">
+                            <input type="text" class="form-control" name="family_name" required
+                                placeholder="Enter family name">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Email *</label>
-                            <input type="email" class="form-control" name="email" required placeholder="Enter email address">
+                            <input type="email" class="form-control" name="email" required
+                                placeholder="Enter email address">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Phone *</label>
-                            <input type="tel" class="form-control" name="phone" required placeholder="Enter phone number">
+                            <input type="tel" class="form-control" name="phone" required
+                                placeholder="Enter phone number">
                         </div>
                     </div>
                 </div>
@@ -338,13 +346,15 @@ Customer Management - Administrator Portal
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label">Service Name *</label>
-                            <input type="text" class="form-control" name="service_name" required placeholder="Enter service name">
+                            <input type="text" class="form-control" name="service_name" required
+                                placeholder="Enter service name">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Service Cost *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" name="service_cost" step="0.01" min="0" required placeholder="0.00">
+                                <input type="number" class="form-control" name="service_cost" step="0.01" min="0"
+                                    required placeholder="0.00">
                             </div>
                         </div>
                     </div>
@@ -400,13 +410,15 @@ Customer Management - Administrator Portal
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label">Part Name *</label>
-                            <input type="text" class="form-control" name="part_name" required placeholder="Enter part name">
+                            <input type="text" class="form-control" name="part_name" required
+                                placeholder="Enter part name">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Part Cost *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" name="part_cost" step="0.01" min="0" required placeholder="0.00">
+                                <input type="number" class="form-control" name="part_cost" step="0.01" min="0" required
+                                    placeholder="0.00">
                             </div>
                         </div>
                     </div>

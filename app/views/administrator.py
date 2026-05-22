@@ -672,7 +672,7 @@ def service_catalog():
                     )
                     db.session.add(service)
                     db.session.commit()
-                    flash(f'Service "{data["service_name"]}" added!', 'success')
+                    flash(f'Service {data["service_name"]} added!', 'success')
                 except Exception as e:
                     logger.error(f"Failed to add service: {e}")
                     db.session.rollback()
@@ -745,7 +745,7 @@ def parts_catalog():
                     )
                     db.session.add(part)
                     db.session.commit()
-                    flash(f'Part "{data["part_name"]}" added!', 'success')
+                    flash(f'Part {data["part_name"]} added!', 'success')
                 except Exception as e:
                     logger.error(f"Failed to add part: {e}")
                     db.session.rollback()

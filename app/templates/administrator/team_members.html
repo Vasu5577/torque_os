@@ -36,7 +36,8 @@
                         <div class="row g-3 align-items-end">
                             <div class="col-md-5">
                                 <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control" name="invite_email" placeholder="colleague@example.com" required>
+                                <input type="email" class="form-control" name="invite_email"
+                                    placeholder="colleague@example.com" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Role</label>
@@ -64,7 +65,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
+                <div class="card-header"
+                    style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white;">
                     <h5 class="card-title mb-0 d-flex align-items-center gap-2" style="color: white;">
                         <i class="ti ti-users"></i>
                         Current Members
@@ -100,7 +102,8 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-{% if member.role == 'administrator' %}primary{% elif member.role == 'technician' %}info{% else %}secondary{% endif %}">
+                                        <span
+                                            class="badge bg-{% if member.role == 'administrator' %}info{% elif member.role == 'technician' %}warning{% else %}dark{% endif %}">
                                             {{ member.role|title }}
                                         </span>
                                     </td>
@@ -126,13 +129,18 @@
                                         <div class="d-flex gap-1">
                                             <form method="post" action="#" class="d-inline">
                                                 <input type="hidden" name="member_id" value="{{ member.id }}">
-                                                <select class="form-select form-select-sm d-inline-block" name="new_role" onchange="this.form.submit()" style="width: auto;">
-                                                    <option value="administrator" {% if member.role == 'administrator' %}selected{% endif %}>Admin</option>
-                                                    <option value="technician" {% if member.role == 'technician' %}selected{% endif %}>Tech</option>
-                                                    <option value="viewer" {% if member.role == 'viewer' %}selected{% endif %}>Viewer</option>
+                                                <select class="form-select form-select-sm d-inline-block"
+                                                    name="new_role" onchange="this.form.submit()" style="width: auto;">
+                                                    <option value="administrator" {% if member.role=='administrator'
+                                                        %}selected{% endif %}>Admin</option>
+                                                    <option value="technician" {% if member.role=='technician'
+                                                        %}selected{% endif %}>Tech</option>
+                                                    <option value="viewer" {% if member.role=='viewer' %}selected{%
+                                                        endif %}>Viewer</option>
                                                 </select>
                                             </form>
-                                            <form method="post" action="#" class="d-inline" onsubmit="return confirm('Remove this team member?');">
+                                            <form method="post" action="#" class="d-inline"
+                                                onsubmit="return confirm('Remove this team member?');">
                                                 <input type="hidden" name="remove_member_id" value="{{ member.id }}">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                                     <i class="ti ti-user-minus"></i>

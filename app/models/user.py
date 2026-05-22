@@ -173,7 +173,7 @@ class User(db.Model, BaseModelMixin, TimestampMixin):
             return None
 
         email = jwt_payload.get('email')
-        name = jwt_payload.get('name', '')
+        name = jwt_payload.get('name')
 
         if email:
             existing = cls.find_by_email(email)
@@ -183,7 +183,7 @@ class User(db.Model, BaseModelMixin, TimestampMixin):
                 db.session.commit()
                 return existing
 
-        username = email.split('@')[0] if email else f"user_{neon_auth_user_id[:8]}"
+        username = name if name else (email.split('@')[0] if email else f"user_{neon_auth_user_id[:8]}")
         base_username = username
         counter = 1
         while cls.find_by_username(username):
