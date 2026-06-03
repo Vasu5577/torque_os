@@ -19,16 +19,16 @@ Billing History & Overdue Bills - Administrator Portal
                 <div>
                     <h1 class="h3 mb-0">
                         <i class="ti ti-clock text-primary me-2"></i>
-                        Billing History & Overdue Bills
+                        Billing History
                     </h1>
-                    <p class="text-muted mb-0">View billing history and manage overdue payments</p>
+                    <p class="text-muted mb-0">View billing history and manage paid/overdue payments</p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ url_for('administrator.customer_list') }}" class="btn btn-outline-primary">
                         <i class="ti ti-users me-1"></i>
                         Customer Management
                     </a>
-                    <a href="{{ url_for('administrator.pay_bills') }}" class="btn btn-outline-success">
+                    <a href="{{ url_for('administrator.unpaid_bills') }}" class="btn btn-outline-success">
                         <i class="ti ti-credit-card me-1"></i>
                         Process Payments
                     </a>
@@ -47,9 +47,9 @@ Billing History & Overdue Bills - Administrator Portal
                             <i class="ti ti-alert-triangle text-warning" style="font-size: 2.5rem;"></i>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <div class="small text-muted">Overdue Bills</div>
+                            <div class="small text-muted">Unpaid Bills</div>
                             <div class="h4 mb-0">
-                                {{ jobs|selectattr('overdue')|list|length if jobs else 0 }}
+                                {{ unpaid_bills if unpaid_bills else 0 }} 
                             </div>
                         </div>
                     </div>
@@ -76,23 +76,6 @@ Billing History & Overdue Bills - Administrator Portal
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
-                            <i class="ti ti-circle-check text-success" style="font-size: 2.5rem;"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <div class="small text-muted">Paid Bills</div>
-                            <div class="h4 mb-0">
-                                {{ jobs|selectattr('paid')|list|length if jobs else 0 }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
                             <i class="ti ti-currency-dollar text-success" style="font-size: 2.5rem;"></i>
                         </div>
                         <div class="flex-grow-1 ms-3">
@@ -100,6 +83,28 @@ Billing History & Overdue Bills - Administrator Portal
                             <div class="h4 mb-0">
                                 {% if jobs %}
                                     ${{ "%.2f"|format(jobs|selectattr('paid')|sum(attribute='total_cost')|float) }}
+                                {% else %}
+                                    $0.00
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="ti ti-currency-dollar text-danger" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="small text-muted">Outstanding</div>
+                            <div class="h4 mb-0">
+                                {% if jobs %}
+                                    ${{ "%.2f"|format(jobs|rejectattr('paid')|sum(attribute='total_cost')|float) }}
                                 {% else %}
                                     $0.00
                                 {% endif %}
@@ -122,15 +127,15 @@ Billing History & Overdue Bills - Administrator Portal
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/administrator_overdue_bills" class="row g-3">
+                    <form method="POST" action="{{ url_for('administrator.bill_history') }}" class="row g-3">
                         <div class="col-md-8">
                             <label class="form-label">Select Customer</label>
-                            <select class="form-select" name="customer_choose_overduebill">
+                            <select class="form-select" name="customer_choose">
                                 <option value="">Show all bills...</option>
                                     {% for customer in customers %}
-                                    <option value="{{ customer.customer_id }} {{ customer.first_name }} {{ customer.family_name }}"
-                                            {% if selected_customer and customer.customer_id == selected_customer.customer_id %}selected{% endif %}>
-                                        {{ customer.first_name }} {{ customer.family_name }} (ID: {{ customer.customer_id }})
+                                        {% set loop_val = customer.customer_id ~ " " ~ customer.first_name ~ " " ~ customer.family_name %}
+                                        <option value="{{ loop_val }}" {% if chosen_customer_val == loop_val %}selected{% endif %}>
+                                            {{ customer.first_name }} {{ customer.family_name }} (ID: {{ customer.customer_id }})
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -220,19 +225,19 @@ Billing History & Overdue Bills - Administrator Portal
                                 <thead class="table-light">
                                 <tr>
                                     <th>Job ID</th>
-                                        <th>Customer</th>
+                                    <th>Customer</th>
                                     <th>Job Date</th>
-                                        <th>Amount</th>
-                                        <th>Job Status</th>
+                                    <th>Amount</th>
+                                    <th>Job Status</th>
                                     <th>Payment Status</th>
-                                        <th>Actions</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     {% for job in jobs %}
                                         {% if selected_customer %}
                                             {% if job.customer_id == selected_customer.customer_id %}
-                                            <tr class="{% if job.overdue %}table-warning{% elif job.paid == 1 %}table-light{% endif %}">
+                                            <tr class="{% if job.overdue %}table-danger{% elif job.paid %}table-success{% else %}table-warning{% endif %}">
                                                 <td>
                                                     <span class="text-white badge bg-primary">#{{ job.job_id }}</span>
                                                 </td>
@@ -291,7 +296,7 @@ Billing History & Overdue Bills - Administrator Portal
                                                             <i class="ti ti-eye"></i>
                                                         </a>
                                                         {% if not job.paid %}
-                                                            <a href="{{ url_for('administrator.pay_bills') }}" class="btn btn-sm btn-outline-success">
+                                                            <a href="{{ url_for('administrator.unpaid_bills') }}" class="btn btn-sm btn-outline-success">
                                                                 <i class="ti ti-credit-card"></i>
                                                             </a>
                                                         {% endif %}
@@ -301,7 +306,7 @@ Billing History & Overdue Bills - Administrator Portal
                                             {% endif %}
                                         {% else %}
                                             <!-- Display jobs for all customers -->
-                                            <tr class="{% if job.overdue %}table-warning{% elif job.paid == 1 %}table-light{% endif %}">
+                                            <tr class="{% if job.overdue %}table-danger{% elif job.paid %}table-success{% else %}table-warning{% endif %}">
                                                 <td>
                                                     <span class="text-white badge bg-primary">#{{ job.job_id }}</span>
                                                 </td>
@@ -356,11 +361,16 @@ Billing History & Overdue Bills - Administrator Portal
                                                 </td>
                                                 <td>
                                                     <div class="d-flex gap-2">
-                                                        <a href="{{ url_for('technician.modify_job', job_id=job.job_id) }}" class="btn btn-sm btn-outline-info">
+                                                        <a href="{{ url_for('technician.modify_job', job_id=job.job_id) }}" class="btn btn-sm btn-outline-info" title="Modify/View Job">
                                                             <i class="ti ti-eye"></i>
                                                         </a>
+                                                        {% if job.paid %}
+                                                        <a href="{{ url_for('administrator.job_invoice', job_id=job.job_id) }}" class="btn btn-sm btn-outline-info" title="View Invoice">
+                                                            <i class="ti ti-file-invoice"></i>
+                                                        </a>
+                                                        {% endif %}
                                                         {% if not job.paid %}
-                                                            <a href="{{ url_for('administrator.pay_bills') }}" class="btn btn-sm btn-outline-success">
+                                                            <a href="{{ url_for('administrator.unpaid_bills') }}" class="btn btn-sm btn-outline-success" title="Mark as Paid">
                                                                 <i class="ti ti-credit-card"></i>
                                                             </a>
                                                         {% endif %}
@@ -378,16 +388,16 @@ Billing History & Overdue Bills - Administrator Portal
                             <h6 class="text-muted mb-2">Legend:</h6>
                             <div class="d-flex flex-wrap gap-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="table-warning" style="width: 20px; height: 20px; border-radius: 3px; margin-right: 8px;"></div>
-                                    <small>Overdue Bills</small>
+                                    <div style="width: 20px; height: 20px; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 4px; margin-right: 8px;"></div>
+                                    <small class="text-secondary">Overdue Bills</small>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <div class="table-light" style="width: 20px; height: 20px; border-radius: 3px; margin-right: 8px; border: 1px solid #dee2e6;"></div>
-                                    <small>Paid Bills</small>
+                                    <div style="width: 20px; height: 20px; background-color: #d1e7dd; border: 1px solid #a3cfbb; border-radius: 4px; margin-right: 8px;"></div>
+                                    <small class="text-secondary">Paid Bills</small>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <div class="bg-white" style="width: 20px; height: 20px; border-radius: 3px; margin-right: 8px; border: 1px solid #dee2e6;"></div>
-                                    <small>Regular Bills</small>
+                                    <div style="width: 20px; height: 20px; background-color: #fff3cd; border: 1px solid #fde59a; border-radius: 4px; margin-right: 8px;"></div>
+                                    <small class="text-secondary">Unpaid Bills</small>
                                 </div>
                             </div>
                         </div>
